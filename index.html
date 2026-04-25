@@ -2,430 +2,202 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Music Customized Player V1.0</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dark Music Player - Bypass off</title>
     <style>
-        :root {
-            --spotify-green: #1DB954;
-            --spotify-grey: #b3b3b3;
-            --danger: #e74c3c;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { 
+            height: 100%; 
+            background-color: #050505; 
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            color: white;
         }
 
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(-45deg, #121212, #1db954, #191414, #121212);
-            background-size: 400% 400%;
-            animation: gradientBG 30s ease infinite;
-            color: white;
+        /* Section 1: Initial Message Box */
+        #status-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            overflow: hidden;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .player-card {
-            background: rgba(255, 255, 255, 0.1);
-            width: 380px;
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
+            padding: 20px;
             text-align: center;
         }
 
-        h2 { color: var(--spotify-green); margin-bottom: 20px; font-weight: 800; }
+        .info-box {
+            border: 2px solid #ff4d4d;
+            padding: 30px;
+            background: rgba(255, 0, 0, 0.05);
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.3);
+            max-width: 500px;
+            animation: pulse 2s infinite;
+        }
 
-        .glass-controls {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 20px;
-            margin: 15px 0;
-            display: flex;
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 77, 77, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.3); }
+        }
+
+        .info-box h2 { color: #ff4d4d; margin-bottom: 15px; text-transform: uppercase; }
+        .info-box p { line-height: 1.6; font-size: 1.1rem; }
+
+        /* Section 2: Leader Security Info (Loading Replacement) */
+        #loader-screen {
+            display: none;
             flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .timeline-box {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: var(--spotify-grey);
-        }
-
-        .progress-container {
-            flex-grow: 1;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        #progressBar {
-            height: 100%;
-            width: 0%;
-            background: var(--spotify-green);
-            border-radius: 10px;
-        }
-
-        .control-btns {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        #playPauseBtn {
-            width: 55px;
-            height: 55px;
-            background: white;
-            color: black;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .upload-btn-wrapper { margin-bottom: 10px; position: relative; overflow: hidden; display: inline-block;}
-        .btn { border: none; color: white; background: var(--spotify-green); padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
-        
-        #trackName { font-size: 1rem; font-weight: bold; display: block; margin-bottom: 5px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 300px;}
-
-        #playlist { max-height: 150px; overflow-y: auto; margin-top: 10px; }
-        
-        .song-item { 
-            display: flex; 
-            justify-content: space-between;
             align-items: center;
-            padding: 12px; 
-            margin-bottom: 8px; 
-            border-radius: 10px; 
-            background: rgba(255, 255, 255, 0.05);
-            transition: 0.2s;
+            height: 100vh;
+            color: #00ff41;
         }
 
-        .song-info-click {
-            flex-grow: 1;
-            cursor: pointer;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            overflow: hidden;
+        .security-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+    
+        .progress-container {
+            width: 80%;
+            max-width: 300px;
+            height: 10px;
+            border: 1px solid #00ff41;
+            padding: 2px;
         }
 
-        .song-info-click span {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .progress-bar {
+            height: 100%;
+            background: #00ff41;
+            width: 0%;
+            transition: width 0.1s linear;
         }
 
-        .remove-btn {
-            background: none;
-            border: none;
-            color: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            font-size: 14px;
-            padding: 5px;
-            transition: 0.2s;
+        /* Section 3: Hacking Matrix Background */
+        #hacker-canvas {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
-        .remove-btn:hover { color: var(--danger); }
-
-        .playing { color: var(--spotify-green); background: rgba(29, 185, 84, 0.1); border-left: 3px solid var(--spotify-green); }
-        
-        input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; width: 100%; }
-        #playlist::-webkit-scrollbar { width: 3px; }
-        #playlist::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
-        
-        
-        
-        
-        
-        
-        
-        
-     <!-- loading pudf-->
-     
-body {
-    margin: 0;
-}
-
-#loader {
-    position: fixed;
-    width: 100%;
-    height: 100vh;
-    /* Dark Neon Green Background */
-    background: radial-gradient(circle, #0a2f05 0%, #000000 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-/* Minimal Black Pulse */
-.dot {
-    width: 20px;
-    height: 20px;
-    background: #39FF14;
-    border-radius: 50%;
-    box-shadow: 0 0 20px #39FF14;
-    animation: pulse 1.5s infinite ease-in-out;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(2.5); opacity: 0; }
-}
-
-
-
-
-<!-- 3doy -->
-
-
-
-
-
-
-
+        .overlay-text {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            color: #00ff41;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
 
-<div class="player-card">
-    <h2>DARK MUSIC PLAYER</h2>
-
-    <div class="upload-btn-wrapper">
-      <button class="btn"><i class="fas fa-plus"></i> Add Song</button>
-      <input type="file" id="songSelector" accept="audio/*">
-    </div>
-
-    <div class="glass-controls">
-        <span id="trackName">Ready to play</span>
-        
-        <div class="timeline-box">
-            <span id="currentTime">0:00</span>
-            <div class="progress-container" id="progressContainer">
-                <div id="progressBar"></div>
-            </div>
-            <span id="duration">0:00</span>
-        </div>
-
-
-
-        <div class="control-btns">
-            <button class="icon-btn" onclick="prevSong()"><i class="fas fa-step-backward"></i></button>
-            <button id="playPauseBtn" onclick="togglePlay()"><i class="fas fa-play" id="playIcon"></i></button>
-            <button class="icon-btn" onclick="nextSong()"><i class="fas fa-step-forward"></i></button>
+    <div id="status-container">
+        <div class="info-box">
+            <h2>Website in maintenance</h2>
+            <p>Hosting domain and developer side are currently stopped by developer (leader). Wait for new updated version.</p>
         </div>
     </div>
-<h4>My Songs list</h4>
-    <audio id="mainAudio"></audio>
-    <div id="playlist"></div>
-</div>
 
-
-
-
-
-
-<!-- 3dots -->
-
-
-
-
-
-
-<!-- loading puff-->
-<div id="loader">
-    <div class="dot"></div>
-</div>
-
-<div id="content" style="display:none;">
+    <div id="loader-screen">
+        <div class="security-text">Leader Server File</div>
+        <div class="progress-container">
+            <div id="progress" class="progress-bar"></div>
+        </div>
+        <p id="loading-percent" style="margin-top:10px">Scanning: 0%</p>
     </div>
-    
 
-    
+    <canvas id="hacker-canvas"></canvas>
+    <div id="hacker-ui" class="overlay-text" style="display:none;">
+        &gt; SYSTEM OVERRIDE INITIATED<br>
+        &gt; BYPASSING FIREWALL... OK<br>
+        &gt; LOADING CORE_DATA...<br>
+        &gt; DEVELOPER: LEADER
+    </div>
 
-<script>
-    const songSelector = document.getElementById('songSelector');
-    const mainAudio = document.getElementById('mainAudio');
-    const trackName = document.getElementById('trackName');
-    const playlistDiv = document.getElementById('playlist');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const playIcon = document.getElementById('playIcon');
-    const progressBar = document.getElementById('progressBar');
-    const progressContainer = document.getElementById('progressContainer');
-    const currentTimeEl = document.getElementById('currentTime');
-    const durationEl = document.getElementById('duration');
+    <script>
+        const statusContainer = document.getElementById('status-container');
+        const loaderScreen = document.getElementById('loader-screen');
+        const progressBar = document.getElementById('progress');
+        const percentText = document.getElementById('loading-percent');
+        const canvas = document.getElementById('hacker-canvas');
+        const hackerUI = document.getElementById('hacker-ui');
 
-    let db, songList = [], currentPlayingIndex = -1;
-
-    const request = indexedDB.open("MusicDB", 1);
-    request.onupgradeneeded = (e) => {
-        db = e.target.result;
-        db.createObjectStore("songs", { keyPath: "id", autoIncrement: true });
-    };
-    request.onsuccess = (e) => {
-        db = e.target.result;
-        loadSavedSongs();
-    };
-
-    songSelector.addEventListener('change', async function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const transaction = db.transaction(["songs"], "readwrite");
-            const store = transaction.objectStore("songs");
-            const addRequest = store.add({ name: file.name, data: event.target.result });
-            addRequest.onsuccess = (ev) => loadSavedSongs(ev.target.result);
-        };
-        reader.readAsArrayBuffer(file);
-        this.value = ""; 
-    });
-
-    function loadSavedSongs(autoPlayId = null) {
-        const transaction = db.transaction(["songs"], "readonly");
-        const getAll = transaction.objectStore("songs").getAll();
-        getAll.onsuccess = () => {
-            songList = getAll.result;
-            renderPlaylist();
-            if (autoPlayId) {
-                const idx = songList.findIndex(s => s.id === autoPlayId);
-                if (idx !== -1) playSong(idx);
-            }
-        };
-    }
-
-    function renderPlaylist() {
-        playlistDiv.innerHTML = "";
-        songList.forEach((song, index) => {
-            const div = document.createElement('div');
-            div.className = 'song-item' + (index === currentPlayingIndex ? ' playing' : '');
+        // Logic Timeline
+        setTimeout(() => {
+            // 1. Hide first box
+            statusContainer.style.display = 'none';
+            // 2. Show Leader Security Info
+            loaderScreen.style.display = 'flex';
             
-            div.innerHTML = `
-                <div class="song-info-click" onclick="playSong(${index})">
-                    <i class="fas fa-music"></i>
-                    <span>${song.name}</span>
-                </div>
-                <button class="remove-btn" onclick="removeSong(event, ${song.id})">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            `;
-            playlistDiv.appendChild(div);
-        });
-    }
+            // Start Progress Bar (5 seconds)
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    startHackingSequence();
+                } else {
+                    width++;
+                    progressBar.style.width = width + '%';
+                    percentText.innerText = 'Scanning: ' + width + '%';
+                }
+            }, 50); // 50ms * 100 = 5000ms (5 seconds)
 
-    function removeSong(event, id) {
-        event.stopPropagation(); // Prevents playing when clicking remove
-        const transaction = db.transaction(["songs"], "readwrite");
-        transaction.objectStore("songs").delete(id);
-        transaction.oncomplete = () => {
-            if (currentPlayingIndex !== -1 && songList[currentPlayingIndex].id === id) {
-                mainAudio.pause();
-                mainAudio.src = "";
-                trackName.innerText = "Select a song";
-                currentPlayingIndex = -1;
-                playIcon.className = "fas fa-play";
-            }
-            loadSavedSongs();
-        };
-    }
+        }, 5000); // Wait 5 seconds on initial message
 
-    function formatTime(secs) {
-        const min = Math.floor(secs / 60);
-        const sec = Math.floor(secs % 60);
-        return `${min}:${sec < 10 ? '0' : ''}${sec}`;
-    }
+        function startHackingSequence() {
+            loaderScreen.style.display = 'none';
+            canvas.style.display = 'block';
+            hackerUI.style.display = 'block';
+            
+            runMatrixEffect();
 
-    function playSong(index) {
-        if (index < 0 || index >= songList.length) return;
-        currentPlayingIndex = index;
-        const song = songList[index];
-        const url = URL.createObjectURL(new Blob([song.data], { type: "audio/mpeg" }));
-        mainAudio.src = url;
-        trackName.innerText = song.name;
-        renderPlaylist();
-        mainAudio.play();
-        playIcon.className = "fas fa-pause";
-    }
-
-    function togglePlay() {
-        if (!mainAudio.src) return;
-        if (mainAudio.paused) {
-            mainAudio.play();
-            playIcon.className = "fas fa-pause";
-        } else {
-            mainAudio.pause();
-            playIcon.className = "fas fa-play";
+            // Auto-Close/Finish after 5 seconds of hacking
+            setTimeout(() => {
+                document.body.innerHTML = "<div style='display:flex; justify-content:center; align-items:center; height:100vh; color:#333; font-size:10px;'>SESSION_CLOSED</div>";
+                window.close();
+            }, 5000);
         }
-    }
 
-    function nextSong() { if (currentPlayingIndex < songList.length - 1) playSong(currentPlayingIndex + 1); }
-    function prevSong() { if (currentPlayingIndex > 0) playSong(currentPlayingIndex - 1); }
+        function runMatrixEffect() {
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-    mainAudio.onloadedmetadata = () => { durationEl.innerText = formatTime(mainAudio.duration); };
-    mainAudio.ontimeupdate = () => {
-        const percent = (mainAudio.currentTime / mainAudio.duration) * 100;
-        progressBar.style.width = percent + "%";
-        currentTimeEl.innerText = formatTime(mainAudio.currentTime);
-    };
+            const chars = "0101010101ABCDEFHIJKLMNOPQRSTUVWXYZ";
+            const fontSize = 14;
+            const columns = canvas.width / fontSize;
+            const drops = Array(Math.floor(columns)).fill(1);
 
-    progressContainer.onclick = (e) => {
-        const width = progressContainer.clientWidth;
-        const clickX = e.offsetX;
-        mainAudio.currentTime = (clickX / width) * mainAudio.duration;
-    };
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#00ff41";
+                ctx.font = fontSize + "px monospace";
 
-    mainAudio.onended = nextSong;
-    
-    
-    
-    
-    
-    
-    
-    window.onload = function() {
-    setTimeout(function() {
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('content').style.display = 'block';
-    }, 3000);
-};
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            setInterval(draw, 33);
+        }
 
-
-
-
-
-<!-- 3dots -->
-
-
-         
-
-</script>
-
+        // Mobile scaling fix
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
 </body>
 </html>
